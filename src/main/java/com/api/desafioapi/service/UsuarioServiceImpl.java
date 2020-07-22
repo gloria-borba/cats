@@ -30,4 +30,12 @@ public class UsuarioServiceImpl implements UsuarioService{
 		return repository.save(playlist);
 	}
 
+	@Override
+	public void deletedById(String id) {
+		repository.deleteById(id);
+
+	}
+	
+	
+
 }

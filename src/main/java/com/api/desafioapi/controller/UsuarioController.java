@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,11 @@ public class UsuarioController {
 	@PostMapping(value="/usuario")
 	public Mono<Usuario> save(@RequestBody Usuario playlist){
 		return service.save(playlist);
+	}
+	
+	@DeleteMapping(value="/usuario/{id}")
+	public void delete(@PathVariable String id){
+		 service.deletedById(id);
 	}
 	
 	@GetMapping(value="/usuario/webflux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

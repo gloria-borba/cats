@@ -9,7 +9,12 @@ public interface UsuarioService {
 
 	//Flux vários objetos
 	Flux<Usuario> findAll();
+	
 	//Mono apenas um obj
 	Mono<Usuario> findById(String id);
+	
 	Mono<Usuario> save(Usuario playlist);
+	
+	void deletedById(String id); 
+	
 }
