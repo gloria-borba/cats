@@ -1,8 +1,7 @@
 package com.api.desafioapi;
 
-import java.util.UUID;
-
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.api.desafioapi.document.Usuario;
@@ -26,9 +25,9 @@ public class DummyData implements CommandLineRunner{
 
     	repository.deleteAll()
                 .thenMany(
-                        Flux.just("Glória Borba", "Chris Evans", "Kiernan shipka",
-                                "Pipico", "Marília Mendonça", "Henry Cavill", "Rick Sanchez")
-                                .map(nome -> new Usuario(UUID.randomUUID().toString(), nome))
+                        Flux.just("gloria.borba", "chris.evans", 
+                                "pipico", "marilia.mendonça", "henry.cavill")
+                                .map(login -> new Usuario(login, new BCryptPasswordEncoder().encode("123")))
                                 .flatMap(repository::save))
                 .subscribe(System.out::println);
     }
