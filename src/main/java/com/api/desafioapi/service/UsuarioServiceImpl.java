@@ -21,13 +21,18 @@ public class UsuarioServiceImpl implements UsuarioService{
 	}
 
 	@Override
-	public Mono<Usuario> findById(String id) {
+	public Mono<Usuario> findByLogin(String id) {
 		return repository.findById(id);
 	}
 
 	@Override
-	public Mono<Usuario> save(Usuario playlist) {
-		return repository.save(playlist);
+	public Mono<Usuario> save(Usuario usuario) throws Exception{
+		
+		if(this.findByLogin(usuario.getLogin()) != null) {
+			throw new Exception("Login do usuário já existente");
+		}
+		
+		return repository.save(usuario);
 	}
 
 	@Override

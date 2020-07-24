@@ -16,11 +16,11 @@ import reactor.core.publisher.Mono;
 public class ImplementsUserDetailsService implements UserDetailsService{
 
 	@Autowired
-	private UsuarioRepository Repository;
+	private UsuarioRepository repository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-		Mono<Usuario> usuario = Repository.findById(login);
+		Mono<Usuario> usuario = repository.findById(login);
 		
 		if(usuario == null){
 			throw new UsernameNotFoundException("Usuario não encontrado!");

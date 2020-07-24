@@ -11,9 +11,9 @@ public interface UsuarioService {
 	Flux<Usuario> findAll();
 	
 	//Mono apenas um obj
-	Mono<Usuario> findById(String id);
+	Mono<Usuario> findByLogin(String id);
 	
-	Mono<Usuario> save(Usuario playlist);
+	Mono<Usuario> save(Usuario playlist) throws Exception;
 	
 	void deletedById(String id); 
 	
