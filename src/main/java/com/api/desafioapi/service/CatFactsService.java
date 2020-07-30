@@ -4,15 +4,8 @@ import java.util.Optional;
 
 import com.api.desafioapi.document.Fact;
 
-public interface CatsService {
-		
-	/**
-	 * Consumindo a api https://http.cat/
-	 * @param http
-	 * @return https://http.cat/
-	 */
-	public byte[] obterHttpImagemCat(String http);
-	
+public interface CatFactsService {
+			
 	/**
 	 * Listagem dos fatores de gatos 
 	 * @param animalType

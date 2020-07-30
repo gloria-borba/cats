@@ -33,7 +33,7 @@ public class SwaggerConfig {
 
 	        ApiInfo apiInfo = new ApiInfo(
 	                "Cat Users API REST",
-	                "API REST de cadastro de usuários amantes de gatos",
+	                "API REST para amantes de gatos",
 	                "1.0",
 	                "Terms of Service",
 	                new Contact("Glória Borba", "https://github.com/gloria-borba",

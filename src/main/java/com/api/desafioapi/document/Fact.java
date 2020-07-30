@@ -1,11 +1,13 @@
 package com.api.desafioapi.document;
+
 /**
  * Classe que representa os fatos sobre gatos
+ * 
  * @author Stefanny
  *
  */
 public class Fact {
-	
+
 	private String _id;
 	private Long _v;
 	private String text;

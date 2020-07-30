@@ -1,54 +1,35 @@
-package com.api.desafioapi.service;
+package com.api.desafioapi.repository.impl;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.api.desafioapi.document.Fact;
+import com.api.desafioapi.repository.CatFactsRepository;
 
-@Service
-public class CatsServiceImpl implements CatsService {
+@Repository
+public class CatFactsRepositoryImpl implements CatFactsRepository {
 
-	@Override
-	public byte[] obterHttpImagemCat(String http) {
-		RestTemplate restTemplate = new RestTemplate(this.getClientHttpRequestFactory());
+	@Autowired
+	RestTemplate restTemplate;
 
-		byte[] in = restTemplate.getForObject(this.urlHttpCat(http) + ".jpg", byte[].class);
-
-		return in;
-	}
-
-	private ClientHttpRequestFactory getClientHttpRequestFactory() {
-		int timeout = 60000;
-		SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-		clientHttpRequestFactory.setConnectTimeout(timeout);
-		clientHttpRequestFactory.setReadTimeout(timeout);
-		return clientHttpRequestFactory;
-	}
-
-	private String urlHttpCat(String http) {
-		return "https://http.cat/" + http;
-	}
-
-	private UriComponentsBuilder uriCatFat() {
+	private UriComponentsBuilder uriCatFact() {
 		return UriComponentsBuilder.newInstance().scheme("https").host("cat-fact.herokuapp.com").path("facts/");
 	}
 
 	@Override
 	public Optional<String> listFactCat(String animalType) {
-		RestTemplate restTemplate = new RestTemplate(this.getClientHttpRequestFactory());
 
-		UriComponents uri = animalType != null ? this.uriCatFat().queryParam("animal_type", animalType).build()
-				: this.uriCatFat().build();
+		UriComponents uri = animalType != null ? this.uriCatFact().queryParam("animal_type", animalType).build()
+				: this.uriCatFact().build();
 
 		ResponseEntity<String> response = restTemplate.exchange(uri.toUriString(), HttpMethod.GET, null,
 				new ParameterizedTypeReference<String>() {
@@ -63,9 +44,8 @@ public class CatsServiceImpl implements CatsService {
 
 	@Override
 	public Optional<Fact> getFact(String factId) {
-		RestTemplate restTemplate = new RestTemplate(this.getClientHttpRequestFactory());
 
-		UriComponents uri = this.uriCatFat().path(factId).build();
+		UriComponents uri = this.uriCatFact().path(factId).build();
 
 		ResponseEntity<Fact> response = restTemplate.exchange(uri.toUriString(), HttpMethod.GET, null,
 				new ParameterizedTypeReference<Fact>() {
@@ -76,14 +56,12 @@ public class CatsServiceImpl implements CatsService {
 		}
 
 		return Optional.empty();
-
 	}
 
 	@Override
 	public Optional<String> listFactCatRandom(String animalType, String amount) {
-		RestTemplate restTemplate = new RestTemplate(this.getClientHttpRequestFactory());
 
-		UriComponentsBuilder uri = this.uriCatFat().path("random/");
+		UriComponentsBuilder uri = this.uriCatFact().path("random/");
 
 		if (animalType != null) {
 			uri.queryParam("animal_type/", animalType);
