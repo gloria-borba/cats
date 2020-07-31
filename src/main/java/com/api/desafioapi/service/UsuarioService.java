@@ -7,14 +7,42 @@ import reactor.core.publisher.Mono;
 
 public interface UsuarioService {
 
-	//Flux vários objetos
+	/**
+	 * Consulta todos os usuários
+	 * 
+	 * @return Flux<Usuario>
+	 */
 	Flux<Usuario> findAll();
-	
-	//Mono apenas um obj
-	Mono<Usuario> findByLogin(String id);
-	
-	Mono<Usuario> save(Usuario playlist) throws Exception;
-	
-	void deletedById(String id); 
-	
+
+	/**
+	 * Consulta um usuário pelo login
+	 * 
+	 * @param login
+	 * @return Mono<Usuario>
+	 */
+	Mono<Usuario> findByLogin(String login);
+
+	/**
+	 * Salva um usuário
+	 * @param usuario
+	 * @return Mono<Usuario>
+	 */
+	Mono<Usuario> save(Usuario usuario);
+
+	/**
+	 * Deleta um usuário pelo login
+	 * 
+	 * @param login
+	 */
+	Mono<Void> deletedByLogin(String login);
+
+	/**
+	 * Atualização da senha/nome do usuário
+	 * 
+	 * @param login
+	 * @param usuario
+	 * @return Mono<Usuario>
+	 */
+	Mono<Usuario> update(String login, Usuario usuario);
+
 }

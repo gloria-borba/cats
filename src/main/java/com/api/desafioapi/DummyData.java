@@ -1,7 +1,8 @@
 //package com.api.desafioapi;
 //
+//import org.springframework.util.DigestUtils;
+//
 //import org.springframework.boot.CommandLineRunner;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.stereotype.Component;
 //
 //import com.api.desafioapi.document.Usuario;
@@ -9,9 +10,13 @@
 //
 //import reactor.core.publisher.Flux;
 //
+///**
+// * Classe utilizada para adicionar usuários no banco pela primeira vez
+// * Após utilizar comentar
+// * @author Stefanny
+// *
+// */
 //@Component
-////Classe que salva os dados no banco ao iniciar
-////Comenta a classe pra usar depois
 //public class DummyData implements CommandLineRunner{
 //	
 //	private final UsuarioRepository repository;
@@ -27,7 +32,7 @@
 //                .thenMany(
 //                        Flux.just("gloria.borba", "chris.evans", 
 //                                "pipico", "marilia.mendonca", "henry.cavill")
-//                                .map(login -> new Usuario(login, new BCryptPasswordEncoder().encode("123")))
+//                                .map(login -> new Usuario(login, DigestUtils.md5DigestAsHex("123".getBytes())))
 //                                .flatMap(repository::save))
 //                .subscribe(System.out::println);
 //    }

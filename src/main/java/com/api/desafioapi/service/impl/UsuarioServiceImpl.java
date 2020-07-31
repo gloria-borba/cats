@@ -1,17 +1,19 @@
-package com.api.desafioapi.service;
+package com.api.desafioapi.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import com.api.desafioapi.document.Usuario;
 import com.api.desafioapi.repository.UsuarioRepository;
+import com.api.desafioapi.service.UsuarioService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
-	
+public class UsuarioServiceImpl implements UsuarioService {
+
 	@Autowired
 	UsuarioRepository repository;
 
@@ -21,26 +23,35 @@ public class UsuarioServiceImpl implements UsuarioService{
 	}
 
 	@Override
-	public Mono<Usuario> findByLogin(String id) {
-		return repository.findById(id);
+	public Mono<Usuario> findByLogin(String login) {
+		return repository.findById(login);
 	}
 
 	@Override
-	public Mono<Usuario> save(Usuario usuario) throws Exception{
-		
-		if(this.findByLogin(usuario.getLogin()) != null) {
-			throw new Exception("Login do usuário já existente");
-		}
-		
-		return repository.save(usuario);
+	public Mono<Usuario> save(Usuario usuario) {
+
+		String encodedPassword = DigestUtils.md5DigestAsHex(usuario.getSenha().getBytes());
+		usuario.setSenha(encodedPassword);
+
+		return this.findByLogin(usuario.getLogin()).switchIfEmpty(repository.save(usuario)).
+		// lançar exceção
+				then(null);
+
 	}
 
 	@Override
-	public void deletedById(String id) {
-		repository.deleteById(id);
-
+	public Mono<Void> deletedByLogin(String login) {
+		return repository.deleteById(login);
 	}
-	
-	
+
+	@Override
+	public Mono<Usuario> update(String login, Usuario usuario) {
+		return this.findByLogin(login).flatMap(existingUser -> {
+			existingUser.setSenha(usuario.getSenha() != null ? DigestUtils.md5DigestAsHex(usuario.getSenha().getBytes())
+					: DigestUtils.md5DigestAsHex(existingUser.getSenha().getBytes()));
+			existingUser.setNome(usuario.getNome() != null ? usuario.getNome() : existingUser.getNome());
+			return repository.save(existingUser);
+		});
+	}
 
 }
